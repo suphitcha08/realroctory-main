@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>สล็อตโทนม่วงดำ</title>
+  <title>Slot game</title>
   <style>
     body {
       margin: 0;
@@ -107,6 +107,26 @@
 body {
   margin-top: 60px;
 }
+.money-panel {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.money-panel input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 80px;
+  text-align: right;
+}
+
+.money-display {
+  font-size: 1.2rem;
+  color: #ffdf5d;
+  margin-right: 10px;
+}
 
   </style>
 </head>
@@ -129,6 +149,13 @@ body {
     <div class="reel" id="reel2">⭐</div>
     <div class="reel" id="reel3">🍇</div>
   </div>
+  <div class="money-panel">
+  <span class="money-display">เงินคงเหลือ: <span id="balance">0</span> บาท</span>
+  <button onclick="addMoney()">เพิ่มเงิน</button>
+  <span>ราคาปั่น:</span>
+  <input type="number" id="betAmount" value="10" min="1">
+</div>
+
   <button class="spin-btn" id="spinBtn">SPIN</button>
 
   <script>
@@ -176,6 +203,43 @@ body {
         }
       }, 60);
     });
+    let balance = 0;
+const balanceEl = document.getElementById("balance");
+const betAmountEl = document.getElementById("betAmount");
+
+function updateBalanceDisplay() {
+  balanceEl.textContent = balance;
+}
+
+function addMoney() {
+  const amount = parseInt(prompt("ใส่จำนวนเงินที่ต้องการเพิ่ม:"), 10);
+  if (!isNaN(amount) && amount > 0) {
+    balance += amount;
+    updateBalanceDisplay();
+  }
+}
+
+const oldSpinHandler = document.getElementById("spinBtn").onclick || function(){};
+
+document.getElementById("spinBtn").onclick = function() {
+  const bet = parseInt(betAmountEl.value, 10);
+  if (isNaN(bet) || bet <= 0) {
+    alert("กรุณาใส่ราคาปั่นที่ถูกต้อง");
+    return;
+  }
+  if (balance < bet) {
+    alert("เงินไม่พอ กรุณาเพิ่มเงินก่อน");
+    return;
+  }
+  balance -= bet;
+  updateBalanceDisplay();
+
+  // เรียกโค้ดปั่นเดิม
+  oldSpinHandler();
+};
+
+updateBalanceDisplay();
+
   </script>
 </body>
 </html>

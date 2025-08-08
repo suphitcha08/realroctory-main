@@ -158,3 +158,23 @@ button:hover {
   background-color: #218838;
 }
 
+.money-panel {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.money-panel input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 80px;
+  text-align: right;
+}
+
+.money-display {
+  font-size: 1.2rem;
+  color: #ffdf5d;
+  margin-right: 10px;
+}
