@@ -1,245 +1,189 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Slot game</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #1a0026, #3b0a45);
-      font-family: Arial, sans-serif;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      justify-content: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slot game</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #d3b3ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    h1 {
-      margin-bottom: 20px;
-      color: #d5aaff;
-      text-shadow: 0 0 10px #b85eff;
-    }
+  .balance, .controls {
+    margin: 10px;
+    font-size: 24px;
+  }
 
-    .slot-machine {
-      background-color: #1b1b1b;
-      border: 4px solid #b85eff;
-      border-radius: 15px;
-      padding: 20px;
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 20px #6a0dad;
-    }
+  input[type="number"] {
+    padding: 5px;
+    font-size: 18px;
+    width: 80px;
+    border-radius: 5px;
+    border: none;
+  }
 
-    .reel {
-      width: 80px;
-      height: 80px;
-      background-color: #2e003e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2rem;
-      border-radius: 10px;
-      border: 2px solid #b85eff;
-      box-shadow: inset 0 0 10px #6a0dad;
-    }
+  button {
+    padding: 10px 20px;
+    font-size: 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #6a0dad;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+  }
 
-    .spin-btn {
-      background-color: #b85eff;
-      color: white;
-      border: none;
-      padding: 10px 25px;
-      font-size: 1.2rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
-    }
+  button:hover {
+    background-color: #8a2be2;
+  }
 
-    .spin-btn:hover {
-      background-color: #9f4adf;
-      transform: scale(1.05);
-    }
+  .slots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
 
-    /* Navbar โทนม่วงดำ */
-.custom-navbar {
-  width: 100%;
-  background-color: #2e003e;
-  color: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
+  .slot {
+    width: 100px;
+    height: 100px;
+    background: #4b0082;
+    border: 4px solid #d3b3ff;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    box-shadow: 0 0 15px #8a2be2;
+    transition: transform 0.8s ease-in-out;
+  }
 
-.custom-navbar-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .slot.spinning {
+    animation: spinEffect 0.8s ease-in-out;
+  }
 
-.custom-logo {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #d5aaff;
-  text-shadow: 0 0 5px #b85eff;
-}
+  @keyframes spinEffect {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(360deg); }
+    100% { transform: rotateX(0deg); }
+  }
 
-.custom-nav-links a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 20px;
-  transition: color 0.3s;
-}
+  .win-message {
+    position: absolute;
+    top: 40%;
+    background: linear-gradient(90deg, #ff00ff, #800080);
+    padding: 20px 40px;
+    border-radius: 15px;
+    font-size: 36px;
+    color: #fff;
+    animation: popup 1.5s forwards;
+  }
 
-.custom-nav-links a:hover {
-  color: #d5aaff;
-}
-
-/* กันเนื้อหาโดน navbar ทับ */
-body {
-  margin-top: 60px;
-}
-.money-panel {
-  margin-bottom: 15px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.money-panel input {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 80px;
-  text-align: right;
-}
-
-.money-display {
-  font-size: 1.2rem;
-  color: #ffdf5d;
-  margin-right: 10px;
-}
-
-  </style>
+  @keyframes popup {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
 </head>
-
 <body>
-    <header class="custom-navbar">
-  <div class="custom-navbar-container">
-    <div class="custom-logo">🎰 Slot game By เป็ด</div>
-    <nav class="custom-nav-links">
-      <a href="index.html">หน้าออกรางวัล</a>
-      <a href="slot.html">Slot game</a>
-      <a href="contact.html">ติดต่อ</a>
-    </nav>
-  </div>
-</header>
 
-  <h1>🎰 Slot game 🎰</h1>
-  <div class="slot-machine">
-    <div class="reel" id="reel1">🍒</div>
-    <div class="reel" id="reel2">⭐</div>
-    <div class="reel" id="reel3">🍇</div>
-  </div>
-  <div class="money-panel">
-  <span class="money-display">เงินคงเหลือ: <span id="balance">0</span> บาท</span>
-  <button onclick="addMoney()">เพิ่มเงิน</button>
-  <span>ราคาปั่น:</span>
-  <input type="number" id="betAmount" value="10" min="1">
+<div class="balance">ยอดเงินคงเหลือ: <span id="balance">1000</span> บาท</div>
+
+<div class="controls">
+  ราคาเดิมพัน: <input type="number" id="betAmount" value="50" min="1">
+  <button id="spinBtn">SPIN</button>
 </div>
 
-  <button class="spin-btn" id="spinBtn">SPIN</button>
+<div class="slots" id="slots">
+  <div class="slot">🎰</div>
+  <div class="slot">🎰</div>
+  <div class="slot">🎰</div>
+</div>
 
-  <script>
-    const symbols = ["🍒", "🍋", "🍇", "🍉", "⭐", "🔔"];
-    const reels = [
-      document.getElementById("reel1"),
-      document.getElementById("reel2"),
-      document.getElementById("reel3")
-    ];
-    const spinBtn = document.getElementById("spinBtn");
+<script>
+let balance = 1000;
+const symbols = ["🍒","🍋","🍊","🍉","⭐","💎"];
+const balanceEl = document.getElementById('balance');
+const betInput = document.getElementById('betAmount');
+const spinBtn = document.getElementById('spinBtn');
+const slotDivs = document.querySelectorAll('.slot');
 
-    spinBtn.addEventListener("click", () => {
-      let counter = 0;
-      const spinInterval = setInterval(() => {
-        reels.forEach(reel => {
-          const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-          reel.textContent = randomSymbol;
-        });
-        counter++;
-        if (counter > 15) {
-          clearInterval(spinInterval);
+spinBtn.addEventListener('click', spinSlots);
 
-          // โอกาสชนะ 40%
-          const isWin = Math.random() < 0.4;
+function spinSlots() {
+    let bet = parseInt(betInput.value);
+    if (isNaN(bet) || bet <= 0) {
+        alert("ใส่จำนวนเดิมพันที่ถูกต้อง!");
+        return;
+    }
+    if (bet > balance) {
+        alert("ยอดเงินไม่พอ!");
+        return;
+    }
 
-          if (isWin) {
-            // ชนะ → ให้ทั้ง 3 reel เป็นอันเดียวกัน
-            const winningSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-            reels.forEach(reel => reel.textContent = winningSymbol);
-            setTimeout(() => {
-              alert("🎉 คุณถูกรางวัล! 🎉");
-            }, 100);
-          } else {
-            // แพ้ → สุ่มจนไม่เหมือนกันทั้งหมด
-            let results;
-            do {
-              results = reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]);
-            } while (new Set(results).size === 1);
+    balance -= bet;
+    balanceEl.textContent = balance;
 
-            reels.forEach((reel, i) => reel.textContent = results[i]);
-            setTimeout(() => {
-              alert("😢 เสียใจด้วย คุณไม่ถูกรางวัล");
-            }, 100);
-          }
+    // ใส่ class spinning ให้ทุก slot
+    slotDivs.forEach(slot => slot.classList.add('spinning'));
+
+    setTimeout(() => {
+        let result = [];
+
+        // 60% โอกาสถูกรางวัล
+        if (Math.random() < 0.4) {
+            let idx = Math.floor(Math.random() * symbols.length);
+            result = [symbols[idx], symbols[idx], symbols[idx]];
+        } else {
+            for (let i = 0; i < 3; i++) {
+                let idx = Math.floor(Math.random() * symbols.length);
+                result.push(symbols[idx]);
+            }
+            // ป้องกัน 3 ตัวเหมือนกันในส่วนที่ไม่ถูกรางวัล
+            if (result[0] === result[1] && result[1] === result[2]) {
+                let idx2;
+                do { idx2 = Math.floor(Math.random() * symbols.length); }
+                while (idx2 === symbols.indexOf(result[0]));
+                result[1] = symbols[idx2];
+            }
         }
-      }, 60);
-    });
-    let balance = 0;
-const balanceEl = document.getElementById("balance");
-const betAmountEl = document.getElementById("betAmount");
 
-function updateBalanceDisplay() {
-  balanceEl.textContent = balance;
+        // แสดงผลในแต่ละ slot
+        slotDivs.forEach((slot, i) => {
+            slot.textContent = result[i];
+            slot.classList.remove('spinning');
+        });
+
+        // ตรวจรางวัล
+        if (result[0] === result[1] && result[1] === result[2]) {
+            let winAmount = bet * 5;
+            balance += winAmount;
+            balanceEl.textContent = balance;
+            showWinMessage("ยินดีด้วย! คุณถูกรางวัล " + winAmount + " บาท");
+        }
+
+    }, 800);
 }
 
-function addMoney() {
-  const amount = parseInt(prompt("ใส่จำนวนเงินที่ต้องการเพิ่ม:"), 10);
-  if (!isNaN(amount) && amount > 0) {
-    balance += amount;
-    updateBalanceDisplay();
-  }
+function showWinMessage(text) {
+    const msg = document.createElement('div');
+    msg.className = 'win-message';
+    msg.textContent = text;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
 }
+</script>
 
-const oldSpinHandler = document.getElementById("spinBtn").onclick || function(){};
-
-document.getElementById("spinBtn").onclick = function() {
-  const bet = parseInt(betAmountEl.value, 10);
-  if (isNaN(bet) || bet <= 0) {
-    alert("กรุณาใส่ราคาปั่นที่ถูกต้อง");
-    return;
-  }
-  if (balance < bet) {
-    alert("เงินไม่พอ กรุณาเพิ่มเงินก่อน");
-    return;
-  }
-  balance -= bet;
-  updateBalanceDisplay();
-
-  // เรียกโค้ดปั่นเดิม
-  oldSpinHandler();
-};
-
-updateBalanceDisplay();
-
-  </script>
 </body>
 </html>
