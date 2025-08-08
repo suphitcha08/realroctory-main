@@ -203,7 +203,7 @@ body {
         }
       }, 60);
     });
-    let balance = 0;
+   let balance = 0;
 const balanceEl = document.getElementById("balance");
 const betAmountEl = document.getElementById("betAmount");
 
@@ -219,6 +219,7 @@ function addMoney() {
   }
 }
 
+// เก็บ handler เดิมของปุ่ม spin (ถ้ามี)
 const oldSpinHandler = document.getElementById("spinBtn").onclick || function(){};
 
 document.getElementById("spinBtn").onclick = function() {
@@ -231,14 +232,31 @@ document.getElementById("spinBtn").onclick = function() {
     alert("เงินไม่พอ กรุณาเพิ่มเงินก่อน");
     return;
   }
+
+  // หักเงินก่อนปั่น
   balance -= bet;
   updateBalanceDisplay();
 
-  // เรียกโค้ดปั่นเดิม
+  // เรียกโค้ดปั่นเดิม แล้วเพิ่มเงื่อนไขตรวจรางวัล
+  const oldAlert = window.alert;
+  window.alert = function(msg) {
+    if (msg.includes("คุณถูกรางวัล")) {
+      // เพิ่มเงินรางวัล
+      const reward = bet * 5; // รางวัล = ราคาปั่น x 5
+      balance += reward;
+      updateBalanceDisplay();
+    }
+    oldAlert(msg); // แสดงข้อความแจ้งปกติ
+  };
+
   oldSpinHandler();
+
+  // คืน alert กลับเป็นปกติ
+  window.alert = oldAlert;
 };
 
 updateBalanceDisplay();
+
 
   </script>
 </body>
