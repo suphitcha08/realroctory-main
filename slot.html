@@ -203,7 +203,7 @@ body {
         }
       }, 60);
     });
-  let balance = 0;
+    let balance = 0;
 const balanceEl = document.getElementById("balance");
 const betAmountEl = document.getElementById("betAmount");
 
@@ -219,9 +219,10 @@ function addMoney() {
   }
 }
 
+const oldSpinHandler = document.getElementById("spinBtn").onclick || function(){};
+
 document.getElementById("spinBtn").onclick = function() {
   const bet = parseInt(betAmountEl.value, 10);
-
   if (isNaN(bet) || bet <= 0) {
     alert("กรุณาใส่ราคาปั่นที่ถูกต้อง");
     return;
@@ -230,33 +231,11 @@ document.getElementById("spinBtn").onclick = function() {
     alert("เงินไม่พอ กรุณาเพิ่มเงินก่อน");
     return;
   }
-
-  // หักเงินก่อนปั่น
   balance -= bet;
   updateBalanceDisplay();
 
-  // ----------- สุ่มผลสล็อต -----------
-  const reels = document.querySelectorAll(".reel");
-  const emojis = ["🍒", "🍋", "🍇", "🍊", "⭐", "💎"];
-  const results = [];
-
-  reels.forEach(reel => {
-    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-    reel.textContent = randomEmoji;
-    results.push(randomEmoji);
-  });
-
-  // ตรวจว่ารูปเหมือนกันทั้งหมดไหม
-  const isWin = results.every(r => r === results[0]);
-
-  if (isWin) {
-    const reward = bet * 5; // สูตรรางวัล
-    balance += reward;      // เพิ่มเงินเข้า balance
-    updateBalanceDisplay(); // อัปเดตยอดทันที
-    alert(`คุณถูกรางวัล! ได้รับ ${reward} บาท`);
-  } else {
-    alert("เสียใจด้วย คุณไม่ถูกรางวัล");
-  }
+  // เรียกโค้ดปั่นเดิม
+  oldSpinHandler();
 };
 
 updateBalanceDisplay();
