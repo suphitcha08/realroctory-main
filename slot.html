@@ -203,7 +203,7 @@ body {
         }
       }, 60);
     });
-   let balance = 0;
+  let balance = 0;
 const balanceEl = document.getElementById("balance");
 const betAmountEl = document.getElementById("betAmount");
 
@@ -218,9 +218,6 @@ function addMoney() {
     updateBalanceDisplay();
   }
 }
-
-// เก็บ handler เดิมของปุ่ม spin (ถ้ามี)
-const oldSpinHandler = document.getElementById("spinBtn").onclick || function(){};
 
 document.getElementById("spinBtn").onclick = function() {
   const bet = parseInt(betAmountEl.value, 10);
@@ -237,26 +234,31 @@ document.getElementById("spinBtn").onclick = function() {
   balance -= bet;
   updateBalanceDisplay();
 
-  // เรียกโค้ดปั่นเดิม แล้วเพิ่มเงื่อนไขตรวจรางวัล
-  const oldAlert = window.alert;
-  window.alert = function(msg) {
-    if (msg.includes("คุณถูกรางวัล")) {
-      // เพิ่มเงินรางวัล
-      const reward = bet * 5; // รางวัล = ราคาปั่น x 5
-      balance += reward;
-      updateBalanceDisplay();
-    }
-    oldAlert(msg); // แสดงข้อความแจ้งปกติ
-  };
+  // ----------- ส่วนปั่นสล็อต -----------
+  const reels = document.querySelectorAll(".reel");
+  const emojis = ["🍒", "🍋", "🍇", "🍊", "⭐", "💎"];
+  const results = [];
 
-  oldSpinHandler();
+  reels.forEach(reel => {
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    reel.textContent = randomEmoji;
+    results.push(randomEmoji);
+  });
 
-  // คืน alert กลับเป็นปกติ
-  window.alert = oldAlert;
+  // ตรวจว่ารูปเหมือนกันทั้งหมดไหม
+  const isWin = results.every(r => r === results[0]);
+
+  if (isWin) {
+    const reward = bet * 5; // กำหนดสูตรรางวัล
+    balance += reward;
+    updateBalanceDisplay();
+    alert(`คุณถูกรางวัล! ได้รับ ${reward} บาท`);
+  } else {
+    alert("เสียใจด้วย คุณไม่ถูกรางวัล");
+  }
 };
 
 updateBalanceDisplay();
-
 
   </script>
 </body>
