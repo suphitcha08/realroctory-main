@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slot game</title>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">MySlotGame</div>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">หน้าแรก</a>
+    <a href="shop.html">ร้านค้า</a>
+    <a href="profile.html">โปรไฟล์</a>
+  </div>
+  <div class="menu-toggle" id="menuToggle">&#9776;</div>
+</nav>
 <style>
   body {
     margin: 0;
@@ -94,17 +104,68 @@
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
   }
+  body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #6a0dad;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 18px;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Responsive สำหรับมือถือ */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #6a0dad;
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+  }
+  .nav-links a {
+    margin: 15px 0;
+    text-align: center;
+    font-size: 20px;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+}
 </style>
 </head>
-<!-- Navbar -->
-<nav style="width: 100%; background-color: #6a0dad; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-  <div style="font-size: 24px; font-weight: bold;">MySlotGame</div>
-  <div>
-    <a href="index.html" style="color: #fff; text-decoration: none; margin-right: 20px;">หน้าออกรางวัล</a>
-    <a href="slot.html" style="color: #fff; text-decoration: none; margin-right: 20px;">Slot game</a>
-    <a href="" style="color: #fff; text-decoration: none;">ติดต่อ</a>
-  </div>
-</nav>
 
 <body>
 
@@ -122,6 +183,12 @@
 </div>
 
 <script>
+
+    const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+menuToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
 let balance = 1000;
 const symbols = ["🍒","🍋","🍊","🍉","⭐","💎"];
 const balanceEl = document.getElementById('balance');
